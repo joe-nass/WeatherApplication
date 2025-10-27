@@ -1,7 +1,8 @@
 package com.example.weatherapplication.data.dto
 
-import com.example.weatherapplication.domain.model.Condition
-import com.example.weatherapplication.domain.model.Day
+import com.example.weatherapplication.domain.model.day.DayMetricTemperature
+import com.example.weatherapplication.domain.model.day.Day
+import com.example.weatherapplication.domain.model.day.DayImperialTemperature
 import com.google.gson.annotations.SerializedName
 
 data class DayDto(
@@ -20,12 +21,8 @@ data class DayDto(
     val condition: ConditionDto,
 )
 
-fun DayDto.toDomain () = Day(
-    maxTempC = maxTempC,
-    maxTempF = maxTempF,
-    minTempC = minTempC,
-    minTempF = minTempF,
-    avgTempC = avgTempC,
-    avgTempF = avgTempF,
+fun DayDto.toDomain() = Day(
+    celsiusTemperature = DayMetricTemperature(maxTempC, minTempC, avgTempC),
+    fahrenheitTemperature = DayImperialTemperature(maxTempF, minTempF, avgTempF),
     condition = condition.toDomain()
 )
