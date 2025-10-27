@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.navigation.ScreenRoutes
 import com.example.weatherapplication.core.theme.WeatherApplicationTheme
+import com.example.weatherapplication.navigation.WeatherApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,31 +32,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun AppPreview() {
     WeatherApplicationTheme {
         WeatherApp()
-    }
-}
-
-@Composable
-fun WeatherApp() {
-
-
-    val navController = rememberNavController()
-
-    NavHost(navController, startDestination = ScreenRoutes.Home){
-        composable<ScreenRoutes.Home>{
-            HomeScreen()
-        }
-    }
-}
-
-@Composable
-fun HomeScreen() {
-    Scaffold(topBar = {}, bottomBar = {}) {
-        Text("Home", modifier = Modifier.fillMaxSize().padding(it))
     }
 }
