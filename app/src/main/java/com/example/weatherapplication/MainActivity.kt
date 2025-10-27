@@ -1,4 +1,4 @@
-package com.example.weatherapplication.entry
+package com.example.weatherapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.weatherapp.navigation.ScreenRoutes
 import com.example.weatherapplication.core.theme.WeatherApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,29 +25,37 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherApplicationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                WeatherApp()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     WeatherApplicationTheme {
-        Greeting("Android")
+        WeatherApp()
+    }
+}
+
+@Composable
+fun WeatherApp() {
+
+
+    val navController = rememberNavController()
+
+    NavHost(navController, startDestination = ScreenRoutes.Home){
+        composable<ScreenRoutes.Home>{
+            HomeScreen()
+        }
+    }
+}
+
+@Composable
+fun HomeScreen() {
+    Scaffold(topBar = {}, bottomBar = {}) {
+        Text("Home", modifier = Modifier.fillMaxSize().padding(it))
     }
 }
