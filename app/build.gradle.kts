@@ -14,6 +14,7 @@ val envFile = rootProject.file(".env")
 val properties = Properties()
 properties.load(FileInputStream(envFile))
 val apiKey = properties.getProperty("API_KEY")
+val baseUrl = properties.getProperty("BASE_URL")
 
 android {
     namespace = "com.example.weatherapplication"
@@ -28,14 +29,23 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY", apiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", apiKey)
+            buildConfigField("String", "BASE_URL", baseUrl)
+        }
         release {
-            isMinifyEnabled = false
+            //This is useless Ofc, we dont have API_KEY or Production Url in release build
+            buildConfigField("String", "API_KEY", apiKey)
+            buildConfigField("String", "BASE_URL", baseUrl)
+
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 sealed class ScreenRoutes {
 
     @Serializable
-    object Home : ScreenRoutes()
+    object CurrentWeather : ScreenRoutes()
 
 }
