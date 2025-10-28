@@ -1,6 +1,7 @@
 package com.example.weatherapplication.features.weather
 
 import com.example.weatherapplication.data.data_sources.remote.ForecastResponse
+import com.example.weatherapplication.domain.ForecastFullData
 
 
 interface ForecastContract {
@@ -13,7 +14,7 @@ interface ForecastContract {
     data class ForecastUiState(
         val isLoading: Boolean = false,
         val query: String = "",
-        val data: ForecastResponse? = null,
+        val data: ForecastFullData? = null,
         //What is the point of having errors if im already using events to show the msg to user?
         val error: String? = null,
     )

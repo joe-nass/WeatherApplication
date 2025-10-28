@@ -10,5 +10,5 @@ data class ForecastDto(
 )
 
 fun ForecastDto.toDomain () = Forecast(
-    forecastDay = forecastDay.map { it.toDomain() }
+    forecastDay = forecastDay.map { it.toDomain() },
 )

@@ -3,6 +3,7 @@ package com.example.weatherapplication.features.weather
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weatherapplication.data.data_sources.remote.toDomain
 import com.example.weatherapplication.domain.use_cases.GetForecastUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,7 +39,7 @@ class CurrentWeatherViewModel @Inject constructor(
 
         getForecastUseCase(query).fold(onSuccess = { forecast ->
             _uiState.update {
-                ForecastContract.ForecastUiState(data = forecast, isLoading = false, query = query)
+                ForecastContract.ForecastUiState(data = forecast.toDomain(), isLoading = false, query = query)
             }
             Log.d("TAG", "loadForecast: $forecast")
         }, onFailure = { throwable ->
