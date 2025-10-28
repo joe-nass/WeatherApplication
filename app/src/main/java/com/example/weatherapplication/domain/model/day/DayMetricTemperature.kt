@@ -1,7 +1,7 @@
 package com.example.weatherapplication.domain.model.day
 
 data class DayMetricTemperature(
-    override val maxTemp: Double,
-    override val minTemp: Double,
-    override val avgTemp: Double
+    override val maxTemp: Int,
+    override val minTemp: Int,
+    override val avgTemp: Int
 ) : DayTemperature

@@ -6,6 +6,7 @@ import com.example.weatherapplication.domain.model.day.Day
 import com.example.weatherapplication.domain.model.day.DayImperialTemperature
 import com.example.weatherapplication.domain.model.day.UnitTypeDayTemperature
 import com.google.gson.annotations.SerializedName
+import kotlin.math.roundToInt
 
 data class DayDto(
     @SerializedName("maxtemp_c")
@@ -28,14 +29,14 @@ data class DayDto(
 fun DayDto.toDomain() = Day(
     unitTypeDayTemperature = UnitTypeDayTemperature(
         imperial = DayImperialTemperature(
-            maxTempF,
-            minTempF,
-            avgTempF
+            maxTempF.roundToInt(),
+            minTempF.roundToInt(),
+            avgTempF.roundToInt()
         ),
         metric = DayMetricTemperature(
-            maxTempC,
-            minTempC,
-            avgTempC
+            maxTempC.roundToInt(),
+            minTempC.roundToInt(),
+            avgTempC.roundToInt()
         )
     ),
     condition = condition.toDomain(),

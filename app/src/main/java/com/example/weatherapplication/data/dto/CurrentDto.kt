@@ -7,6 +7,7 @@ import com.example.weatherapplication.domain.model.weatherInfo.ImperialUnits
 import com.example.weatherapplication.domain.model.weatherInfo.MetricUnits
 import com.example.weatherapplication.domain.model.weatherInfo.UnitType
 import com.google.gson.annotations.SerializedName
+import kotlin.math.roundToInt
 
 data class CurrentDto(
     @SerializedName("last_updated") val lastUpdated: String,
@@ -33,8 +34,8 @@ data class CurrentDto(
 fun CurrentDto.toDomain() = Current(
     lastUpdated = lastUpdated,
     unitType = UnitType(
-        imperial = ImperialUnits(windMph, pressureIn, precipIn, ImperialTemperature(tempF, feelsLikeF)),
-        metric = MetricUnits(windKph, pressureMb, precipMm, MetricTemperature(tempC, feelsLikeC))
+        imperial = ImperialUnits(windMph, pressureIn, precipIn, ImperialTemperature(tempF.roundToInt(), feelsLikeF.roundToInt())),
+        metric = MetricUnits(windKph, pressureMb, precipMm, MetricTemperature(tempC.roundToInt(), feelsLikeC.roundToInt()))
     ),
     isDay = isDay,
     condition = condition.toDomain(),

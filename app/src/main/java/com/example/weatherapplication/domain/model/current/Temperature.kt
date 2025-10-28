@@ -1,6 +1,6 @@
 package com.example.weatherapplication.domain.model.current
 
 sealed interface Temperature {
-    val temp: Double
-    val feelsLike: Double
+    val temp: Int
+    val feelsLike: Int
 }

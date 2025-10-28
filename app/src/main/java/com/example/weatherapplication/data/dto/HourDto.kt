@@ -7,6 +7,7 @@ import com.example.weatherapplication.domain.model.weatherInfo.ImperialUnits
 import com.example.weatherapplication.domain.model.weatherInfo.MetricUnits
 import com.example.weatherapplication.domain.model.weatherInfo.UnitType
 import com.google.gson.annotations.SerializedName
+import kotlin.math.roundToInt
 
 
 data class HourDto(
@@ -49,7 +50,7 @@ fun HourDto.toDomain() = Hour(
     uv = uv,
     unitType = UnitType(
         imperial = ImperialUnits(
-            windMph, pressureIn, precipIn, ImperialTemperature(tempF, feelsLikeF)
-        ), metric = MetricUnits(windKph, pressureMb, precipMm, MetricTemperature(tempC, feelsLikeC))
+            windMph, pressureIn, precipIn, ImperialTemperature(tempF.roundToInt(), feelsLikeF.roundToInt())
+        ), metric = MetricUnits(windKph, pressureMb, precipMm, MetricTemperature(tempC.roundToInt(), feelsLikeC.roundToInt()))
     )
 )
