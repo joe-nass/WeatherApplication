@@ -1,8 +1,10 @@
 package com.example.weatherapplication.data.dto
 
+import com.example.weatherapplication.domain.model.AirQuality
 import com.example.weatherapplication.domain.model.day.DayMetricTemperature
 import com.example.weatherapplication.domain.model.day.Day
 import com.example.weatherapplication.domain.model.day.DayImperialTemperature
+import com.example.weatherapplication.domain.model.day.UnitTypeDayTemperature
 import com.google.gson.annotations.SerializedName
 
 data class DayDto(
@@ -19,10 +21,23 @@ data class DayDto(
     @SerializedName("avgtemp_f")
     val avgTempF: Double,
     val condition: ConditionDto,
+    @SerializedName("air_quality")
+    val airQuality: AirQualityDto?
 )
 
 fun DayDto.toDomain() = Day(
-    celsiusTemperature = DayMetricTemperature(maxTempC, minTempC, avgTempC),
-    fahrenheitTemperature = DayImperialTemperature(maxTempF, minTempF, avgTempF),
-    condition = condition.toDomain()
+    unitTypeDayTemperature = UnitTypeDayTemperature(
+        imperial = DayImperialTemperature(
+            maxTempF,
+            minTempF,
+            avgTempF
+        ),
+        metric = DayMetricTemperature(
+            maxTempC,
+            minTempC,
+            avgTempC
+        )
+    ),
+    condition = condition.toDomain(),
+    airQuality = airQuality?.toDomain()
 )
