@@ -1,6 +1,6 @@
 package com.example.weatherapplication.domain.repository
 
-import com.example.weatherapplication.domain.model.ForecastFullData
+import com.example.weatherapplication.data.data_sources.remote.ForecastResponse
 
 interface ForecastRepository {
     /**@param [query] parameter based on which data is sent back. It could be following:
@@ -15,5 +15,5 @@ interface ForecastRepository {
      * IP address (IPv4 and IPv6 supported) e.g: q=100.0.0.1
      * By ID returned from Search API. e.g: q=id:2801268
      */
-    suspend fun getForecast(query: String): ForecastFullData
+    suspend fun getForecast(query: String): Result<ForecastResponse>
 }

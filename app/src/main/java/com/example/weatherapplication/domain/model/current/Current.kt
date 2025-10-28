@@ -13,7 +13,7 @@ data class Current(
     val windDir: String,
     val humidity: Int,
     val cloud: Int,
-    val uv: Int,
+    val uv: Double,
     val airQuality: AirQuality?,
 )
 

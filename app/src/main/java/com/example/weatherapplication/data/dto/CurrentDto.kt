@@ -26,8 +26,8 @@ data class CurrentDto(
     val cloud: Int,
     @SerializedName("feelslike_c") val feelsLikeC: Double,
     @SerializedName("feelslike_f") val feelsLikeF: Double,
-    val uv: Int,
-    @SerializedName("ait_quality") val airQuality: AirQualityDto?,
+    val uv: Double,
+    @SerializedName("air_quality") val airQuality: AirQualityDto?,
 )
 
 fun CurrentDto.toDomain() = Current(
