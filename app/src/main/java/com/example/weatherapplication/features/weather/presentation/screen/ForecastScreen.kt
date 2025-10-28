@@ -82,7 +82,6 @@ fun SuccessStateUi(scrollState: ScrollState, forecast: ForecastFullData) {
             )
 
             ForecastSection(
-                scrollState = scrollState,
 //                forecast = forecast
             )
         }
