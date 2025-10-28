@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.navigation.ScreenRoutes
-import com.example.weatherapplication.features.weather.CurrentWeatherScreen
+import com.example.weatherapplication.features.weather.ForecastRoute
 
 @Composable
 fun WeatherApp() {
@@ -13,9 +13,9 @@ fun WeatherApp() {
 
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = ScreenRoutes.CurrentWeather){
-        composable<ScreenRoutes.CurrentWeather>{
-            CurrentWeatherScreen()
+    NavHost(navController, startDestination = ScreenRoutes.Forecast){
+        composable<ScreenRoutes.Forecast>{
+            ForecastRoute()
         }
     }
 }
