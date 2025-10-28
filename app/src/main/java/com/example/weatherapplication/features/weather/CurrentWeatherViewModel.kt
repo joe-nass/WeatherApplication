@@ -37,30 +37,19 @@ class CurrentWeatherViewModel @Inject constructor(
     private fun loadForecast(query: String) = viewModelScope.launch {
         _uiState.update { ForecastContract.ForecastUiState(isLoading = true) }
 
-        getForecastUseCase(query).fold(onSuccess = { forecast ->
-            _uiState.update {
-                ForecastContract.ForecastUiState(data = forecast.toDomain(), isLoading = false, query = query)
+        getForecastUseCase(query)
+            .onSuccess { forecast ->
+                _uiState.update {
+                    ForecastContract.ForecastUiState(data = forecast.toDomain(), isLoading = false, query = query)
+                }
+                Log.d("TAG", "loadForecast: $forecast")
+            }.onFailure { throwable ->
+                Log.d("TAG", "loadForecast: ${throwable.message}")
+                _uiState.update {
+                    ForecastContract.ForecastUiState(error = throwable.message.toString(), isLoading = false)
+                }
+                _events.emit(ForecastContract.ForecastEvent.ShowMessage(throwable.message.toString()))
             }
-            Log.d("TAG", "loadForecast: $forecast")
-        }, onFailure = { throwable ->
-            Log.d("TAG", "loadForecast: ${throwable.message}")
-            _uiState.update {
-                ForecastContract.ForecastUiState(error = throwable.message.toString(), isLoading = false)
-            }
-            _events.emit(ForecastContract.ForecastEvent.ShowMessage(throwable.message.toString()))
-        })
-//            .onSuccess { forecast ->
-//            _uiState.update {
-//                ForecastContract.ForecastUiState(data = forecast, isLoading = false, query = query)
-//            }
-//            Log.d("TAG", "loadForecast: $forecast")
-//        }.onFailure { throwable ->
-//            Log.d("TAG", "loadForecast: ${throwable.message}")
-//            _uiState.update {
-//                ForecastContract.ForecastUiState(error = throwable.message.toString(), isLoading = false)
-//            }
-//            _events.emit(ForecastContract.ForecastEvent.ShowMessage(throwable.message.toString()))
-//        }
     }
 
 
