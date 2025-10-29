@@ -10,6 +10,6 @@ data class ConditionDto(
 
 fun ConditionDto.toDomain () = Condition(
     text = text,
-    icon = icon,
+    icon = "https:${icon}",
     code = code
 )
