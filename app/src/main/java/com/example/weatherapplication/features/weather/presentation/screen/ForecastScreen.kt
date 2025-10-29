@@ -82,7 +82,8 @@ fun SuccessStateUi(scrollState: ScrollState, forecast: ForecastFullData) {
             )
 
             ForecastSection(
-                forecastDay = forecast.forecast.forecastDay.first()
+                forecastDay = forecast.forecast.forecastDay.first(),
+                current = forecast.current
             )
         }
 
