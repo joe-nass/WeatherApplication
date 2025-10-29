@@ -105,8 +105,11 @@ dependencies {
     // Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    //Google Location
+    // Google Location
     implementation(libs.play.services.location)
+
+    // Icons
+    implementation(libs.androidx.compose.material.material.icons.extended)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

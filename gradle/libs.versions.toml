@@ -36,6 +36,9 @@ ksp = "2.0.21-1.0.27"
 kotlinxSerializationJson = "1.8.0"
 ##
 playServicesLocation = "21.2.0"
+##
+androidxMaterialIconsExtendedVersion = "1.7.8"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -92,6 +95,9 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 #Google Location
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+
+#Extended Icons
+androidx-compose-material-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxMaterialIconsExtendedVersion" }
 
 
 [plugins]
