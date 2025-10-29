@@ -16,6 +16,6 @@ import com.example.weatherapplication.domain.model.weatherInfo.UnitType
 fun TopInfoWhenScrolled(country: Location, temp: UnitType, condition: Condition) {
     Column(Modifier.fillMaxWidth().background(Color.Yellow), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(country.name )
-        Text("${temp.metric.temperature.temp}\u00B0C | ${condition.text}")
+        Text("${temp.metric.temperature.temp}\u2103 | ${condition.text}")
     }
 }

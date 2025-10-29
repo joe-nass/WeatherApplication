@@ -29,12 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.weatherapplication.domain.model.ForecastDay
 import com.example.weatherapplication.features.weather.presentation.components.tabs.TodayTab
 import com.example.weatherapplication.features.weather.presentation.components.tabs.WeekTab
 
 
 @Composable
-fun ForecastSection(modifier: Modifier = Modifier) {
+fun ForecastSection(modifier: Modifier = Modifier, forecastDay: ForecastDay) {
 
     val shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
 
@@ -71,8 +72,6 @@ fun ForecastSection(modifier: Modifier = Modifier) {
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
-//                    modifier = Modifier.background(Color.Transparent),
-//                    icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
                     text = { Text(text = title) }
@@ -88,7 +87,7 @@ fun ForecastSection(modifier: Modifier = Modifier) {
                 .padding(bottom = 60.dp)
         ) { page ->
             when (page) {
-                0 -> TodayTab()
+                0 -> TodayTab(hours = forecastDay.hour)
                 1 -> WeekTab()
             }
         }

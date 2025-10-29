@@ -44,7 +44,7 @@ fun CurrentTempSection(
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = location.name, style = style)
         Text(
-            text = current.unitType.metric.temperature.temp.toString() + "\u00B0C",
+            text = current.unitType.metric.temperature.temp.toString() + "\u2103",
             style = style.copy(
                 fontSize = 122.sp,
                 fontWeight = FontWeight.Light
@@ -53,7 +53,7 @@ fun CurrentTempSection(
         Text(text = current.condition.text, style = style)
         Row {
             Text(
-                text = "H:" + forecastDay.day.unitTypeDayTemperature.metric.maxTemp.toString() + "\u00B0C",
+                text = "H:" + forecastDay.day.unitTypeDayTemperature.metric.maxTemp.toString() + "\u2103",
                 style = style.copy(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Light
@@ -61,7 +61,7 @@ fun CurrentTempSection(
             )
             HSpacer(12.dp)
             Text(
-                text = "L:" + forecastDay.day.unitTypeDayTemperature.metric.minTemp.toString() + "\u00B0C",
+                text = "L:" + forecastDay.day.unitTypeDayTemperature.metric.minTemp.toString() + "\u2103",
                 style = style.copy(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Light
