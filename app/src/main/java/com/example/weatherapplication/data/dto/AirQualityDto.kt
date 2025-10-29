@@ -19,7 +19,7 @@ data class AirQualityDto (
      * 5 means Very Unhealthy
      * 6 means Hazardous
      */
-    @SerializedName("us_epa_index")
+    @SerializedName("us-epa-index")
     val usEpaIndex: Int
 )
 
