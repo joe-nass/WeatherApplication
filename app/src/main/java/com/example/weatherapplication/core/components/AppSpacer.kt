@@ -1,13 +1,16 @@
 package com.example.weatherapplication.core.components
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 
 @Composable
@@ -19,3 +22,9 @@ fun RowScope.HSpacer(width: Dp) {
 fun ColumnScope.VSpacer(height: Dp) {
     Spacer(modifier = Modifier.height(height))
 }
+
+@Composable
+fun BoxScope.BSpacer(height: Dp? = null, width: Dp? = null) {
+    Spacer(modifier = Modifier.size(height ?: 0.dp, width ?: 0.dp))
+}
+
