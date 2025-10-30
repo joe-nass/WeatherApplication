@@ -1,8 +1,6 @@
 package com.example.weatherapplication.features.weather
 
 import android.app.Activity
-import android.content.Intent
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,11 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weatherapp.utils.LocationUtils
 import com.example.weatherapplication.core.di.LocationEntryPoint
 import com.example.weatherapplication.features.weather.presentation.screen.ForecastScreen
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 
@@ -57,7 +50,6 @@ fun ForecastRoute(viewModel: CurrentWeatherViewModel = hiltViewModel()) {
         }
     }
 
-    // Get LocationManager instance via EntryPoint
     val locationManager = remember {
         EntryPointAccessors.fromApplication(
             context.applicationContext,
@@ -86,7 +78,9 @@ fun ForecastRoute(viewModel: CurrentWeatherViewModel = hiltViewModel()) {
         }
     }
 
-    ForecastScreen(uiState, snackBarHostState, onErrorRetry = {
+    ForecastScreen(uiState, snackBarHostState, onRefresh = {
+        viewModel.sendIntent(ForecastContract.ForecastIntent.Refresh)
+    }, onErrorRetry = {
         when {
             !utils.hasLocationPermission() -> {
                 permissionLauncher.launch(utils.locationPermissions)

@@ -52,32 +52,54 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     private fun loadForecast(query: String) = viewModelScope.launch {
-        _uiState.update { ForecastContract.ForecastUiState(isLoading = true) }
+        val refreshing = uiState.value.isRefreshing
+
+        if (!refreshing) {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+
+        }
 
         getForecastUseCase(query)
             .onSuccess { forecast ->
                 _uiState.update {
-                    ForecastContract.ForecastUiState(data = forecast.toDomain(), isLoading = false, query = query)
+                    it.copy(
+                        data = forecast.toDomain(),
+                        query = query,
+                        isLoading = false,
+                        isRefreshing = false,
+                        error = null
+                    )
                 }
                 Log.d("TAG", "loadForecast: $forecast")
             }.onFailure { throwable ->
                 Log.d("TAG", "loadForecast: ${throwable.message}")
                 _uiState.update {
-                    ForecastContract.ForecastUiState(error = throwable.message.toString(), isLoading = false)
+                    it.copy(
+                        error = throwable.message.orEmpty(),
+                        isLoading = false,
+                        isRefreshing = false
+                    )
                 }
                 _events.emit(ForecastContract.ForecastEvent.ShowMessage(throwable.message.toString()))
             }
     }
 
     private fun getForeCastOfCurrentUserLocation() = viewModelScope.launch {
+        val isRefreshing = _uiState.value.isRefreshing
+
         getUserLocationUseCase(Unit)
             .onEach { location ->
                 val userLocation = UserLocation(location.latitude, location.longitude)
-                _query.value = userLocation.toString()
+                if(isRefreshing){
+                    //to escape from distinct until change
+                    loadForecast(userLocation.toString())
+                }else {
+                    _query.value = userLocation.toString()
+                }
             }.catch {
                 Log.d("TAG", "getUserLocation: ${it.message}")
                 _uiState.update {
-                    ForecastContract.ForecastUiState(error = it.toString(), isLoading = false)
+                    it.copy(error = it.toString(), isLoading = false, isRefreshing = false)
                 }
                 _events.emit(ForecastContract.ForecastEvent.ShowMessage(it.message.toString()))
             }.collect()
@@ -90,8 +112,10 @@ class CurrentWeatherViewModel @Inject constructor(
                 is ForecastContract.ForecastIntent.LoadWithUserLocation, is ForecastContract.ForecastIntent.Retry -> {
                     getForeCastOfCurrentUserLocation()
                 }
-
-                is ForecastContract.ForecastIntent.Refresh -> {}
+                is ForecastContract.ForecastIntent.Refresh -> {
+                    _uiState.update { it.copy(isRefreshing = true, error = null) }
+                    getForeCastOfCurrentUserLocation()
+                }
             }
         }.collect()
     }

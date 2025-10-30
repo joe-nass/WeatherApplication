@@ -14,7 +14,7 @@ interface ForecastContract {
         val isLoading: Boolean = false,
         val query: String = "",
         val data: ForecastFullData? = null,
-        //What is the point of having errors if im already using events to show the msg to user?
+        val isRefreshing: Boolean = false,
         val error: String? = null,
     )
 
