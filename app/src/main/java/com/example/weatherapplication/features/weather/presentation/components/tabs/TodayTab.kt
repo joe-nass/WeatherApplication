@@ -1,5 +1,13 @@
 package com.example.weatherapplication.features.weather.presentation.components.tabs
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -91,12 +99,21 @@ fun AirQualityCard(airQuality: AirQuality?) {
             height = 200.dp
         ) { airQuality ->
             var expanded by remember { mutableStateOf(false) }
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(animationSpec = tween(250)),
+                horizontalAlignment = Alignment.Start
+            ) {
                 Text(
                     airQuality.usEpaIndex.toString() + " - " + (airQuality.airQualityIndex)
                 )
                 Text("Slider here")
                 HorizontalDivider()
+                val rotation by animateFloatAsState(
+                    targetValue = if (expanded) 0f else -90f,
+                    animationSpec = tween(250), label = "expandArrowRotation"
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,20 +123,24 @@ fun AirQualityCard(airQuality: AirQuality?) {
                 ) {
                     Text(if (expanded) "See less" else "See more")
                     Icon(
-                        if (expanded) Icons.Default.ExpandMore else Icons.Default.ExpandLess,
-                        contentDescription = "See less/more"
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = "See less/more",
+                        modifier = Modifier.rotate(rotation)
                     )
                 }
-
-                if (expanded) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        AirQualityDataItem("CO:", airQuality.co)
-                        AirQualityDataItem("NO2:", airQuality.no2)
-                        AirQualityDataItem("O3:", airQuality.o3)
-                        AirQualityDataItem("PM2.5:", airQuality.pm2_5)
-                        AirQualityDataItem("PM10:", airQuality.pm10)
-                        AirQualityDataItem("SO2:", airQuality.so2)
-                    }
+            }
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    AirQualityDataItem("CO:", airQuality.co)
+                    AirQualityDataItem("NO2:", airQuality.no2)
+                    AirQualityDataItem("O3:", airQuality.o3)
+                    AirQualityDataItem("PM2.5:", airQuality.pm2_5)
+                    AirQualityDataItem("PM10:", airQuality.pm10)
+                    AirQualityDataItem("SO2:", airQuality.so2)
                 }
             }
         }
@@ -192,7 +213,6 @@ fun WindCard(current: Current) {
         }
     }
 }
-
 
 private data object TodayTabValues {
     val chipsSpace: Dp = 10.dp
