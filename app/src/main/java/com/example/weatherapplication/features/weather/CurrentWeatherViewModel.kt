@@ -87,12 +87,11 @@ class CurrentWeatherViewModel @Inject constructor(
     private fun processIntents() = viewModelScope.launch {
         intent.onEach { intent ->
             when (intent) {
-                is ForecastContract.ForecastIntent.LoadWithUserLocation -> {
+                is ForecastContract.ForecastIntent.LoadWithUserLocation, is ForecastContract.ForecastIntent.Retry -> {
                     getForeCastOfCurrentUserLocation()
                 }
 
                 is ForecastContract.ForecastIntent.Refresh -> {}
-                is ForecastContract.ForecastIntent.Retry -> {}
             }
         }.collect()
     }

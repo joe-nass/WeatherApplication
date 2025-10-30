@@ -27,7 +27,7 @@ import com.example.weatherapplication.features.weather.presentation.components.F
 
 
 @Composable
-fun ForecastScreen(uiState: ForecastContract.ForecastUiState) {
+fun ForecastScreen(uiState: ForecastContract.ForecastUiState, onErrorRetry: () -> Unit) {
 
     val scrollState = rememberScrollState()
 
@@ -46,7 +46,7 @@ fun ForecastScreen(uiState: ForecastContract.ForecastUiState) {
             )
             when {
                 uiState.error != null -> {
-                    ErrorStateUi(msg = uiState.error)
+                    ErrorStateUi(msg = uiState.error, onRetry = onErrorRetry)
                 }
 
                 uiState.isLoading -> {
