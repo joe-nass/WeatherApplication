@@ -1,5 +1,7 @@
 package com.example.weatherapplication.features.weather.presentation.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
@@ -13,11 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.weatherapplication.R
 import com.example.weatherapplication.core.components.ErrorStateUi
 import com.example.weatherapplication.core.components.LoadingStateUi
-import com.example.weatherapplication.domain.ForecastFullData
+import com.example.weatherapplication.domain.model.ForecastFullData
 import com.example.weatherapplication.features.weather.ForecastContract
 import com.example.weatherapplication.features.weather.presentation.components.CurrentTempSection
 import com.example.weatherapplication.features.weather.presentation.components.ForecastSection

@@ -4,10 +4,7 @@ import com.example.weatherapplication.data.dto.CurrentDto
 import com.example.weatherapplication.data.dto.ForecastDto
 import com.example.weatherapplication.data.dto.LocationDto
 import com.example.weatherapplication.data.dto.toDomain
-import com.example.weatherapplication.domain.ForecastFullData
-import com.example.weatherapplication.domain.model.Forecast
-import com.example.weatherapplication.domain.model.Location
-import com.example.weatherapplication.domain.model.current.Current
+import com.example.weatherapplication.domain.model.ForecastFullData
 
 data class ForecastResponse (
     val location: LocationDto,
