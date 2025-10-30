@@ -21,7 +21,6 @@ fun NetworkImage(
     contentScale: ContentScale = ContentScale.Crop,
     enablePlaceHolder: Boolean = true
 ) {
-    Log.d("TAG", "NetworkImage: $url")
     AsyncImage(
         modifier = modifier,
         model = ImageRequest.Builder(LocalContext.current)

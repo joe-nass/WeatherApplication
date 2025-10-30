@@ -1,6 +1,8 @@
 package com.example.weatherapplication.features.weather.presentation.components
 
 
+import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -11,6 +13,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,11 +32,26 @@ import com.example.weatherapplication.domain.model.weatherInfo.ImperialUnits
 import com.example.weatherapplication.domain.model.weatherInfo.MetricUnits
 import com.example.weatherapplication.domain.model.current.ImperialTemperature
 import com.example.weatherapplication.domain.model.current.MetricTemperature
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @Composable
 fun HourlyCard(hour: Hour) {
 
     val extractedHours = hour.time.extractHoursWith12System()
+    val nowHour by remember {
+        derivedStateOf {
+            val extractedHour = hour.time.extractHoursWith12System()
+            val currentHour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                LocalTime.now().hour
+                DateTimeFormatter.ofPattern("hh a").format(LocalTime.now())
+            } else {
+                Calendar.getInstance().get(Calendar.HOUR).toString()
+            }
+            extractedHour == currentHour
+        }
+    }
 
 
     Surface(shape = CircleShape) {
@@ -42,7 +63,7 @@ fun HourlyCard(hour: Hour) {
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(extractedHours)
+            Text(if (nowHour) "Now" else extractedHours)
             //TODO: replace with mapped icons later
             NetworkImage(
                 url = hour.condition.icon,
