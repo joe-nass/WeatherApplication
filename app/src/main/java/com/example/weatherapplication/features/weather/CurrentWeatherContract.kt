@@ -1,12 +1,11 @@
 package com.example.weatherapplication.features.weather
 
-import com.example.weatherapplication.data.data_sources.remote.ForecastResponse
-import com.example.weatherapplication.domain.ForecastFullData
+import com.example.weatherapplication.domain.model.ForecastFullData
 
 
 interface ForecastContract {
     sealed interface ForecastIntent {
-        data class Load(val query: String) : ForecastIntent
+        data object LoadWithUserLocation : ForecastIntent
         data object Refresh : ForecastIntent
         data object Retry : ForecastIntent
     }
