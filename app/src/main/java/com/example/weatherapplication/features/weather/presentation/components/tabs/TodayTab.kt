@@ -127,13 +127,31 @@ fun AirQualityCard(airQuality: AirQuality?) {
 }
 
 @Composable
+private fun AirQualityDataItem(text: String, value: Double, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text)
+        Text(value.toString())
+    }
+}
+
+@Composable
 fun UvCard(current: Current) {
     WeatherCardTemplate(
         title = "UV Index",
         icon = Icons.Default.WbSunny,
         data = current,
         modifier = Modifier.fillMaxWidth(),
-    ) { current -> }
+    ) { current ->
+        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceAround) {
+            Text("${current.uv}\n${current.uvStatus}")
+            Text("Slider Here")
+        }
+    }
 }
 
 @Composable
@@ -175,18 +193,6 @@ fun WindCard(current: Current) {
     }
 }
 
-@Composable
-private fun AirQualityDataItem(text: String, value: Double, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text)
-        Text(value.toString())
-    }
-}
 
 private data object TodayTabValues {
     val chipsSpace: Dp = 10.dp
