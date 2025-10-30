@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,11 +24,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.launch
 
 @Composable
 fun ForecastRoute(viewModel: CurrentWeatherViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val utils = remember { LocationUtils(context) }
 
@@ -44,6 +47,13 @@ fun ForecastRoute(viewModel: CurrentWeatherViewModel = hiltViewModel()) {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.sendIntent(ForecastContract.ForecastIntent.Retry)
+            scope.launch {
+                snackBarHostState.showSnackbar("Fetching Location")
+            }
+        }else {
+            scope.launch {
+                snackBarHostState.showSnackbar("Please enable Location")
+            }
         }
     }
 
@@ -76,7 +86,7 @@ fun ForecastRoute(viewModel: CurrentWeatherViewModel = hiltViewModel()) {
         }
     }
 
-    ForecastScreen(uiState, onErrorRetry = {
+    ForecastScreen(uiState, snackBarHostState, onErrorRetry = {
         when {
             !utils.hasLocationPermission() -> {
                 permissionLauncher.launch(utils.locationPermissions)
