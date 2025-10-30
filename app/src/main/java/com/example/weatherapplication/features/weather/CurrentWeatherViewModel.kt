@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,8 +56,7 @@ class CurrentWeatherViewModel @Inject constructor(
         val refreshing = uiState.value.isRefreshing
 
         if (!refreshing) {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-
+            _uiState.update { it.copy(isLoading = true, isRefreshing = false, error = null) }
         }
 
         getForecastUseCase(query)
@@ -85,24 +85,27 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     private fun getForeCastOfCurrentUserLocation() = viewModelScope.launch {
-        val isRefreshing = _uiState.value.isRefreshing
-
         getUserLocationUseCase(Unit)
+            // Only use the first available location per trigger to avoid repeated refreshes
+            .take(1)
             .onEach { location ->
                 val userLocation = UserLocation(location.latitude, location.longitude)
-                if(isRefreshing){
-                    //to escape from distinct until change
+                val isRefreshingNow = _uiState.value.isRefreshing
+                if (isRefreshingNow) {
+                    // Force refresh even if query hasn't changed
                     loadForecast(userLocation.toString())
-                }else {
+                } else {
                     _query.value = userLocation.toString()
                 }
-            }.catch {
+            }
+            .catch {
                 Log.d("TAG", "getUserLocation: ${it.message}")
                 _uiState.update {
                     it.copy(error = it.toString(), isLoading = false, isRefreshing = false)
                 }
                 _events.emit(ForecastContract.ForecastEvent.ShowMessage(it.message.toString()))
-            }.collect()
+            }
+            .collect()
     }
 
 
